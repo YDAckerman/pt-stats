@@ -1,9 +1,7 @@
-import os
 import sys
 sys.path.append("/home/yoni/Projects/learn-stats/pt-stats")
-from funs.db import create_conn, Queries
 import pandas as pd
-import numpy as np
+from funs.db import create_conn, Queries
 
 
 def extract_transform_load(file_name, **kwargs):
@@ -15,8 +13,9 @@ def extract_transform_load(file_name, **kwargs):
 
     pass
 
+
 def load_motion_data(motion_dt, **kwargs):
-    
+
     try:
         motion_dt.to_sql(kwargs.get('destination_table'),
                          con=kwargs.get('conn'),
@@ -29,7 +28,7 @@ def load_motion_data(motion_dt, **kwargs):
 
 def extract_motion_data(file_name):
 
-    return pd.read_csv(file_name, sep = ";", header=0)
+    return pd.read_csv(file_name, sep=";", header=0)
 
 
 def format_column_names(motion_dt):
@@ -37,7 +36,7 @@ def format_column_names(motion_dt):
     if 'time index' in motion_dt.columns:
         motion_dt.rename(columns={'time index': 'time_ind'},
                          inplace=True)
-        
+
     if 'execution type' in motion_dt.columns:
         motion_dt.rename(columns={'execution type': 'execution_type'},
                          inplace=True)
@@ -46,10 +45,13 @@ def format_column_names(motion_dt):
 
 
 def add_meta_data(motion_dt, **kwargs):
-                    
-    motion_dt['subject'] = pd.Series([kwargs.get('_s', None)] * motion_dt.shape[0])
-    motion_dt['exercise_type'] = pd.Series([kwargs.get('_e', None)] * motion_dt.shape[0])
-    motion_dt['sensor_unit'] = pd.Series([kwargs.get('_u', None)] * motion_dt.shape[0])
+
+    motion_dt['subject'] = pd.Series([kwargs.get('_s', None)] *
+                                     motion_dt.shape[0])
+    motion_dt['exercise_type'] = pd.Series([kwargs.get('_e', None)] *
+                                           motion_dt.shape[0])
+    motion_dt['sensor_unit'] = pd.Series([kwargs.get('_u', None)] *
+                                         motion_dt.shape[0])
 
     pass
 
@@ -66,9 +68,9 @@ if __name__ == '__main__':
 
     conn.commit()
 
-    for _s in range(1,6):
-        for _e in range(1,9):
-            for _u in range(1,6):
+    for _s in range(1, 6):
+        for _e in range(1, 9):
+            for _u in range(1, 6):
 
                 base_dir = "/home/yoni/Projects/learn-stats/pt-stats/"
                 times_data_dir = f"data/exercises/s{_s}/e{_e}/"
@@ -83,6 +85,6 @@ if __name__ == '__main__':
                 for tbl, fname in table_to_file.items():
                     kwargs['destination_table'] = tbl
                     extract_transform_load(fname, **kwargs)
-            
+
     conn.commit()
     conn.close()

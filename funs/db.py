@@ -1,16 +1,17 @@
 import sqlite3
 from sqlite3 import Error
 
-def create_conn(db_file):  
+def create_conn(db_file):
     conn = None
     try:
         conn = sqlite3.connect(db_file)
         print("db connection created")
-    except Error as E:
+    except Error as e:
         print(e)
     finally:
         if conn:
             return conn
+
 
 class Queries:
 
