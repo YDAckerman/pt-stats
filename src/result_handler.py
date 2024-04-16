@@ -29,8 +29,9 @@ class ResultHandler():
             for pose in kpt.xyn:
                 pose_df = pd.DataFrame(pose.numpy(),
                                        columns=['X', 'Y'])
-                pose_df['label'] = self.labels
-                pose_df['frame'] = [i]*len(self.labels)
+
+                pose_df["label"] = self.labels.copy()
+                pose_df["frame"] = [i]*len(self.labels)
                 indv_pose.append(pose_df)
 
             individuals.append(indv_pose)
