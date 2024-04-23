@@ -5,7 +5,7 @@ import pickle
 model = YOLO('/home/yoni/Projects/learn-stats/pt-stats/models/yolov8m-pose.pt')
 
 results = model(source='/home/yoni/Videos/Webcam/2024-04-15-100300.webm',
-                show=False, conf=0.3, show_labels=True)
+                show=True, conf=0.3, show_labels=True)
 
 with open('results_4_15_24.pkl', 'wb') as output:
     pickle.dump(results, output, pickle.HIGHEST_PROTOCOL)

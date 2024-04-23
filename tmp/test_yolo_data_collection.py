@@ -1,10 +1,11 @@
 from src.yolo_data_collection import YoloDataCollection
-import pandas as pd
 import seaborn as sb
 import matplotlib.pyplot as plt
 import numpy as np
 
 ydc = YoloDataCollection('results_4_15_24.pkl')
+
+FOREARM_LEN_INCHES = 11
 
 # ###########################################################
 # Stride Length
@@ -15,12 +16,20 @@ lat_wlk_df = ydc.pose_data[1]
 sb.scatterplot(data=lat_wlk_df[lat_wlk_df['frame'] == 0], x='X', y='Y')
 plt.show()
 
+forearm_df = ydc.get_kp_pairs(lat_wlk_df, 'right_elbow', 'right_wrist')
+ydc.get_kp_dists(forearm_df, 'forearm_dist')
+forearm_dist = forearm_df['forearm_dist'].mean()
+
+
 gait_df = ydc.get_kp_pairs(lat_wlk_df, 'left_ankle', 'right_ankle')
+ydc.get_kp_dists(gait_df, 'ankle_dist')
 
-gait_df['ankle_dist'] = np.sqrt((gait_df['X_left'] - gait_df['X_right'])**2 +
-                                (gait_df['Y_left'] - gait_df['Y_right'])**2)
+gait_df['ankle_dist_inches'] = gait_df['ankle_dist'] * FOREARM_LEN_INCHES / forearm_dist
 
-sb.lineplot(data=gait_df, x='frame', y='ankle_dist')
+ax = sb.lineplot(data=gait_df, x='frame', y='ankle_dist_inches')
+ax.set(xlabel='Frame',
+       ylabel='Stride Length (Inches)',
+       title='Stride Length')
 plt.show()
 
 # ###########################################################
@@ -30,6 +39,9 @@ plt.show()
 frnt_wlk_df = ydc.pose_data[0]
 
 sb.scatterplot(data=frnt_wlk_df[frnt_wlk_df['frame'] == 0], x='X', y='Y')
+plt.show()
+
+sb.scatterplot(data=frnt_wlk_df[frnt_wlk_df['frame'] == 335], x='X', y='Y')
 plt.show()
 
 hip_df = ydc.get_kp_pairs(frnt_wlk_df, 'left_hip', 'right_hip')
@@ -47,5 +59,14 @@ def angle_to_x_deg(row):
 
 hip_df['hip_angle'] = hip_df.apply(lambda row: angle_to_x_deg(row), axis=1)
 
-sb.lineplot(data=hip_df, x='frame', y='hip_angle')
+ax = sb.lineplot(data=hip_df, x='frame', y='hip_angle')
+ax.set(xlabel='Frame',
+       ylabel='Hip Angle (Degrees)',
+       title='Hip Angle')
 plt.show()
+
+largest_hip_angle = hip_df[hip_df['hip_angle'] == max(hip_df['hip_angle'])]
+frame_i = largest_hip_angle['frame'].iloc[0]
+
+ydc.results[frame_i].show()
+ydc.results[0].show()

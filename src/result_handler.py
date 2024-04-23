@@ -26,13 +26,19 @@ class ResultHandler():
 
         for i, kpt in enumerate(self.kpts):
             indv_pose = []
+            x_means = []
             for pose in kpt.xyn:
                 pose_df = pd.DataFrame(pose.numpy(),
                                        columns=['X', 'Y'])
-
+                pose_df['Y'] = pose_df['Y'] * (-1) + 1
+                x_means.append(pose_df.mean()['X'])
                 pose_df["label"] = self.labels.copy()
                 pose_df["frame"] = [i]*len(self.labels)
                 indv_pose.append(pose_df)
+
+            # sort according to the x means, left-most first
+            tups = sorted(zip(x_means, indv_pose), reverse=True)
+            indv_pose = [t[1] for t in tups]
 
             individuals.append(indv_pose)
 
