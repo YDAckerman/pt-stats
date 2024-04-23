@@ -13,13 +13,9 @@ FOREARM_LEN_INCHES = 11
 
 lat_wlk_df = ydc.pose_data[1]
 
-sb.scatterplot(data=lat_wlk_df[lat_wlk_df['frame'] == 0], x='X', y='Y')
-plt.show()
-
 forearm_df = ydc.get_kp_pairs(lat_wlk_df, 'right_elbow', 'right_wrist')
 ydc.get_kp_dists(forearm_df, 'forearm_dist')
 forearm_dist = forearm_df['forearm_dist'].mean()
-
 
 gait_df = ydc.get_kp_pairs(lat_wlk_df, 'left_ankle', 'right_ankle')
 ydc.get_kp_dists(gait_df, 'ankle_dist')
@@ -37,13 +33,6 @@ plt.show()
 # ###########################################################
 
 frnt_wlk_df = ydc.pose_data[0]
-
-sb.scatterplot(data=frnt_wlk_df[frnt_wlk_df['frame'] == 0], x='X', y='Y')
-plt.show()
-
-sb.scatterplot(data=frnt_wlk_df[frnt_wlk_df['frame'] == 335], x='X', y='Y')
-plt.show()
-
 hip_df = ydc.get_kp_pairs(frnt_wlk_df, 'left_hip', 'right_hip')
 
 
@@ -64,9 +53,3 @@ ax.set(xlabel='Frame',
        ylabel='Hip Angle (Degrees)',
        title='Hip Angle')
 plt.show()
-
-largest_hip_angle = hip_df[hip_df['hip_angle'] == max(hip_df['hip_angle'])]
-frame_i = largest_hip_angle['frame'].iloc[0]
-
-ydc.results[frame_i].show()
-ydc.results[0].show()
