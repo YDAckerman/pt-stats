@@ -18,8 +18,8 @@ with open('results_4_15_24.pkl', 'rb') as res_file:
 
 
 results = ydc.results
-kp = results[335].keypoints
-xyn = pd.DataFrame(kp.xyn.numpy()[1], columns=["X", "Y"])
+kp = results[0].keypoints
+xyn = pd.DataFrame(kp.xyn.numpy()[0], columns=["X", "Y"])
 xyn['Y'] = xyn['Y'] * (-1) + 1
 xyn['label'] = LABELS
 ax = sb.scatterplot(data=xyn, x='X', y='Y')
@@ -33,3 +33,4 @@ def label_points(df):
                     str(point['label']))
 
 label_points(xyn)
+

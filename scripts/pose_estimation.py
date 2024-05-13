@@ -23,8 +23,10 @@ with open('results_4_15_24.pkl', 'wb') as output:
 #                 '2024-04-01-12h11m15s-v4l2____dev_video0-.avi',
 #                 show=True, conf=0.3, show_labels=True)
 
-# results = model(source='https://youtu.be/GBkJY86tZRE',
-#                 show=True, conf=0.3, show_labels=True)
+# from youtube
+
+results = model(source='https://youtu.be/GBkJY86tZRE',
+                show=False, stream=True, conf=0.3, show_labels=True)
 
 # distance calc
 # pt_dist = ((pt_f2[0] - pt_f1[0])**2 + (pt_f2[1] - pt_f1[1])**2)**0.5

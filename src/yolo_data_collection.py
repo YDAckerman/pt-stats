@@ -26,5 +26,4 @@ class YoloDataCollection():
     @staticmethod
     def get_kp_dists(df, new_column_name):
 
-        df[new_column_name] = np.sqrt((df['X_left'] - df['X_right'])**2 +
-                                      (df['Y_left'] - df['Y_right'])**2)
+        df[new_column_name] = np.sqrt((df['X_left'] - df['X_right'])**2 + (df['Y_left'] - df['Y_right'])**2)
