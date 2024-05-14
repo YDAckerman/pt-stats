@@ -3,7 +3,7 @@ import pandas as pd
 
 class ResultHandler():
 
-    labels = [
+    LABELS = [
         "nose", "left_eye",
         "right_eye", "left_ear",
         "right_ear", "left_shoulder",
@@ -32,8 +32,8 @@ class ResultHandler():
                                        columns=['X', 'Y'])
                 pose_df['Y'] = pose_df['Y'] * (-1) + 1
                 x_means.append(pose_df.mean()['X'])
-                pose_df["label"] = self.labels.copy()
-                pose_df["frame"] = [i]*len(self.labels)
+                pose_df["label"] = self.LABELS.copy()
+                pose_df["frame"] = [i]*len(self.LABELS)
                 indv_pose.append(pose_df)
 
             # sort according to the x means, left-most first
